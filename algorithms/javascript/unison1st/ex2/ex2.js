@@ -15,14 +15,158 @@ Function.prototype.method = function(name, func){
     }
 };
 
+// algorithm
+const UnisonAlgorithm = function(){
+    this.ex2 = new Ex2();
+}
+
 // ex2
 const Ex2 = function(){
     this.name = "Ex2";
 };
 
-Ex1.method("getSolution", function(){
-    console.log("-----------------------" + this.name + "-----------------------");
+// queue object
+const Queue = function(){
+    let queue;
+}
+
+// 새로운 queue 생성
+Queue.method("newQueue", function(name){
+    this.queue = [];
 });
 
+// queue ele 변경
+Queue.method("setQueue", function(i, val){
+    this.queue[i] = val;
+});
 
-export { Ex2 };
+// queue 반환
+Queue.method("getQueue", function(name){
+    return this.queue;
+});
+
+// queue 출력
+Queue.method("printQueue", function(){
+    console.log(this.queue);
+});
+
+// queue에 element 추가
+Queue.method("push", function(num){
+    this.queue.push(num);
+});
+
+// queue에서 element 삭제
+Queue.method("pop", function(){
+    let arr = [];
+    for(let i=1; i<this.queue.length; i++){
+        arr[i-1] = this.queue[i];
+    }
+    this.queue = arr;
+});
+
+/**
+ * N: 문서의 현재 위치, rst: 해당문서가 출력되는 순서
+ */
+Ex2.method("getSolution", function(testCase, N){
+    console.log("-----------------------" + this.name + "-----------------------");
+    if(N > testCase.getQueue().length || N < 0){
+        console.log("N을 잘못 입력하셨습니다.");
+        return;
+    }
+    console.log("testcase는 " + testCase.getQueue());
+    let rst = 1;
+    let arr = [];
+    // N번째 배열이 출력되는 순서확인을 위한 배열
+    const chkArr = new Queue();
+    chkArr.newQueue();
+    for(let i=0; i<testCase.getQueue().length; i++){
+        arr[i] = testCase.getQueue()[i];
+        chkArr.push(testCase.getQueue()[i]);
+    }
+    chkArr.setQueue(N, "ME");
+    let arrIdx = 0;
+    let cnt = 0;
+
+    // 순서도가 큰 순서대로 배열 생성
+    for(let j=0; j<arr.length; j++){
+        for(let i=0; i<arr.length; i++){
+            if(i == arr.length){
+                break;
+            }
+            if(arr[i] < arr[i+1]){
+                let temp = arr[i];
+                arr[i] = arr[i+1];
+                arr[i+1] = temp;
+            }
+        }
+    }
+
+    // 우선순위대로 출력
+    while(testCase.getQueue().length > 0){
+        // 가장 큰 우선순위면 출력
+        if(testCase.getQueue()[0] == arr[arrIdx]){
+            cnt++;
+            if(chkArr.getQueue()[0] == "ME"){
+                rst = cnt;
+            }
+            // console.log("출력: " + testCase.getQueue()[0]);
+            // console.log(testCase.getQueue());
+            // console.log(chkArr.getQueue());
+            testCase.pop();
+            chkArr.pop();
+            arrIdx++;
+        } else {    // 아니면 뒤로 보낸다
+            testCase.push(testCase.getQueue()[0]);
+            chkArr.push(chkArr.getQueue()[0]);
+            testCase.pop();
+            chkArr.pop();
+        }
+    }
+    
+    console.log("문서 인덱스 " + N + "이 출력되는 순서: " + rst);
+});
+
+// create algorithm
+const solution = new UnisonAlgorithm();
+
+// test case 1
+const testCase1 = new Queue();
+testCase1.newQueue();
+testCase1.push(5);
+// testCase1.printQueue();
+
+solution.ex2.getSolution(testCase1, 0);
+
+// test case 2
+const testCase2 = new Queue();
+testCase2.newQueue();
+for(let i=1; i<5; i++){
+    testCase2.push(i);
+}
+// testCase2.printQueue();
+
+solution.ex2.getSolution(testCase2, 2);
+
+// test case 3
+const testCase3 = new Queue();
+testCase3.newQueue();
+testCase3.push(1);
+testCase3.push(1);
+testCase3.push(9);
+testCase3.push(1);
+testCase3.push(1);
+testCase3.push(1);
+// testCase3.printQueue();
+
+solution.ex2.getSolution(testCase3, 0);
+
+// test case 4
+const testCase4 = new Queue();
+testCase4.newQueue();
+testCase4.push(4);
+testCase4.push(1);
+testCase4.push(3);
+testCase4.push(3);
+testCase4.push(10);
+
+solution.ex2.getSolution(testCase4, 3);
