@@ -29,24 +29,28 @@ const Ex3 = function(){
 // input: N(배열의 길이), name(책이름)
 Ex3.method("getSolution", function(N, nameArr){
     console.log("-----------------------" + this.name + "-----------------------");
-    let soldBookArr = {};
+    let soldBookObj = {};
     let length = N;
     let bestSellerCnt = 0;
     let bestSellerArr = [];
 
     // 1. 팔린 책을 count
     for(let i=0; i<length; i++){
-        if(soldBookArr[nameArr[i]] != null){
-            soldBookArr[nameArr[i]]++;
+        if(soldBookObj[nameArr[i]] != null){
+            soldBookObj[nameArr[i]]++;
         } else {
-            soldBookArr[nameArr[i]] = 1;
+            soldBookObj[nameArr[i]] = 1;
         }
     }
 
     // 2. 많이 팔린 책을 뽑는다.
-    for(i in soldBookArr){
-        if(soldBookArr[i] >= bestSellerCnt){
-            bestSellerCnt = soldBookArr[i];
+    for(i in soldBookObj){
+        if(soldBookObj[i] > bestSellerCnt){
+            bestSellerCnt = soldBookObj[i];
+        }
+    }
+    for(i in soldBookObj){
+        if(soldBookObj[i] == bestSellerCnt){
             bestSellerArr.push(i);
         }
     }
@@ -73,8 +77,8 @@ let test1 = ['top', 'top', 'top', 'top', 'kimtop'];
 let N2 = 12;
 let test2 = ['top', 'top', 'top', 'top', 'kimtop', 'kimtop', 'kimtop', 'kimtop', 'aimtop', 'aimtop', 'aimtop', 'aimtop'];
 
-let N3 = 5;
-let test3 = ['a', 'b', 'c', 'c', 'b'];
+let N3 = 8;
+let test3 = ['a', 'b', 'c', 'c', 'b', 'b', 'a', 'a'];
 
 solution.ex3.getSolution(N1, test1);
 solution.ex3.getSolution(N2, test2);
