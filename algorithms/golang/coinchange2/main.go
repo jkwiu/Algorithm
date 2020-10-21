@@ -8,7 +8,7 @@ package main
 import "fmt"
 
 func main() {
-	arr := []int{1,3,5,7}
+	arr := []int{1, 3, 5, 7}
 	change(10, arr)
 }
 
@@ -16,9 +16,11 @@ func change(amount int, coins []int) int {
 	arr := make([]int, amount+1)
 	arr[0] = 1
 	for _, c := range coins {
-		for i := 0; i < amount; i++ {
-			if i+c <= amount {
-				arr[i+c] += arr[i]
+		if c <= amount {
+			for i := 0; i < amount; i++ {
+				if i+c <= amount {
+					arr[i+c] += arr[i]
+				}
 			}
 		}
 	}
