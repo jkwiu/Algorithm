@@ -34,10 +34,10 @@ func concatenatedBinary(n int) int {
 	length, res, mod := 0, 0, 1000000007
 
 	for i := 1; i <= n; i++ {
-		if i&(i-1) == 0 {
+		if i&(i-1) == 0 { // 자릿수가 올라갈 때 마다 length를 증가
 			length++
 		}
-		res = (res<<length | i) % mod
+		res = (res<<length | i) % mod // 자리수만큼 shift이동하고 concat
 	}
 	return res
 }
