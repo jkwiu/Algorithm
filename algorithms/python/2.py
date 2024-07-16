@@ -1,86 +1,57 @@
-import sys
 import time
+# -------------------------------jk-------------------------------
+# print('N, M을 ,로 구분하여 입력해주세요.')
+# N, M = map(int, input().split(','))
+# print('각 숫자를 ,로 구분하여 입력해주세요.')
+# numbers = list(map(int, input().split(',')))
 
-def getSum(n, m, k, numbers):
-    start_time = time.perf_counter()
-    numbers_dsc = sorted(numbers, reverse=True)
-    sum = 0
-    cnt = k
-    idx = 0
-    for i in range(m):
-        if cnt < 1:
-            idx += 1
-            cnt = k+1
-        sum += numbers_dsc[idx] 
-        idx = 0
-        cnt -= 1
-    end_time = time.perf_counter()
-    print(f'time: {end_time-start_time}')
-    print(sum)
+start_time = time.perf_counter()
+# n, m = 2,4
+# numbers = [7,3,1,8,3,3,3,4]
+n, m = 3, 3
+numbers = [3,1,2,4,1,4,2,2,2]
 
-def getSumBook1(n, m, k, data):
-    start_time = time.perf_counter()
-    data.sort()
-    first = data[n - 1]
-    second = data[n - 2]
-    result = 0
-    while True:
-        for i in range(k):
-            if m == 0:
-                break
-            result += first
-            m -= 1
-        if m == 0:
-            break
-        result += second
-        m -= 1
-    end_time = time.perf_counter()
-    print(f'time: {end_time-start_time}')
-    print(result)
+cards= [[None] * n for _ in range(m)]
+cnt = 0
+idx = 0
+for i in range(n):
+    for j in range(m):
+        cards[j][i] = numbers[idx]
+        idx += 1
 
-def getSum2(n, m, k, numbers:list):
-    start_time = time.perf_counter()
-    numbers.sort()
-    bigN = numbers[n-1]
-    nextBigN = numbers[n-2]
-    sumTotal = 0
-    sumGroupCount = k+1
-    groupSum = bigN*k + nextBigN
-    groupCount = m // sumGroupCount
-    outOfGroupSum = m % sumGroupCount
-    if outOfGroupSum == 0:
-        sumTotal = groupSum*groupCount
-    else:
-        sumTotal = groupSum*groupCount + outOfGroupSum*bigN
-    end_time = time.perf_counter()
-    print(f'time: {end_time-start_time}')
-    print(sumTotal)
+transposed = [[row[i] for row in cards] for i in range(n)]
 
-def getSumBook2(n, m, k, data):
-    start_time = time.perf_counter()
-    data.sort()
-    first = data[n - 1]
-    second = data[n - 2]
-    count = int(m /(k+1)*k)
-    count += m % (k+1)
-    result = 0
-    result += (count) * first
-    result += (m - count) * second
-    end_time = time.perf_counter()
-    print(f'time: {end_time-start_time}')
-    print(result)
-    
-    
-    
+minValueList = []
+for i in transposed:
+    minValueList.append(min(i))
 
-
-
-if __name__ == '__main__':
-    # n, m, k = map(int, input().split())
-    # numbers = list(map(int, input().split()))
-    n, m, k = 5, 7, 3
-    numbers = [2,4,5,4,6]
-    getSum(n, m, k, numbers)
-    getSumBook1(n, m, k, numbers)
-    getSum2(n, m, k, numbers)
-    getSumBook2(n, m, k, numbers)
+print(max(minValueList))
+end_time = time.perf_counter()
+print(end_time-start_time)
+# -------------------------------book-------------------------------
+# n, m = map(int, input().split())
+start_time = time.perf_counter()
+result = 0
+cards_row = [[3,1,2],[4,1,4],[2,2,2]]
+for i in range(n):
+    # data = list(map(int, input().split()))
+    data = cards_row[i]
+    min_value = min(data)
+    result = max(result, min_value)
+print(result)
+end_time = time.perf_counter()
+print(end_time-start_time)
+# -------------------------------book-------------------------------
+# n, m = map(int, input().split())
+start_time = time.perf_counter()
+result = 0
+for i in range(n):
+    # data = list(map(int, input().split()))
+    data = cards_row[i]
+    min_value = 10001
+    for a in data:
+        min_value = min(min_value, a)
+    result = max(result, min_value)
+print(result)
+end_time = time.perf_counter()
+print(end_time-start_time)
